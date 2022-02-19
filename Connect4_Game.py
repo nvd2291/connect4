@@ -21,6 +21,7 @@ class Player:
     
     def update_moves(self, row, column):
         self.piece_locations.append([row,column])
+        self.piece_locations = sorted(self.piece_locations)
     
 
 class Board:
@@ -33,9 +34,11 @@ class Board:
         self.board_init()
         self.rows = "ABCDEF"
         self.columns = "1234567"
+        self.num_rows = len(self.rows)
+        self.num_columns = len(self.columns)
 
     def __repr__(self):
-        return self.board_state()
+        return self.print_board()
 
     def board_init(self):
         self.starting_board()
@@ -90,11 +93,37 @@ class Board:
         self.print_board()
 
     def determine_winner(self, player_moves):
-
+        ## players_moves is a sorted list of [r,c]
         ## Horizontal Winner
+        winning_moves_horzontal= 0
+        previous_move = 0
 
-        for moves in player_moves:
-            winning_moves = 0
+        for x in range(0, len(player_moves)):
+            #if any of the moves in a row start at a column greater than 5,
+            #the player can't win in that row
+            if player_moves[x][1] >= 5 and not winning_moves_horzontal:
+                #reset winning moves incase a previous iterations incremented it
+                winning_moves_horzontal= 0
+                continue
+
+
+            if not(previous_move): 
+                if (player_moves[x][1] - previous_move == 1):
+                    winning_moves_horzontal += 1
+                else:
+                    continue
+
+            if winning_moves_horzontal == 4:
+                return True
+
+
+
+        #sort the moves such that is looks at the rows
+        # for moves in range(1, len(player_moves)):
+        #     for rows in range(1, len(player_moves)):
+        #         if player_moves[rows][] - player_moves[rows + ][1]:
+
+            
 
 
 
@@ -103,7 +132,7 @@ class Board:
         ## Left Diagonal Winner
 
         ## Right Diagonal Winner
-        pass
+        
 
 
 def get_player_move(player_name):
@@ -148,7 +177,7 @@ while(not connect4_board.winner or (connect4_board.total_moves <= connect4_board
     #Update Board
     connect4_board.update_board(player1.piece_locations, player1.player_piece)
 
-   #increment the number of total moves
+    #increment the number of total moves
     connect4_board.total_moves +=1
 
     # Get the Player2 piece placement
@@ -175,11 +204,6 @@ while(not connect4_board.winner or (connect4_board.total_moves <= connect4_board
             print(str(connect4_board.winner) + "is the winner!")
             break
 
-
-    # if(connect4_board.total_moves == 2):
-    #     print(player1.pieces)
-    #     print(player2.pieces)
-    #     break
 
 
 
