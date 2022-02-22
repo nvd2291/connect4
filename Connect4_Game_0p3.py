@@ -3,8 +3,8 @@ import numpy as np
 
 ROWS = 6
 COLUMNS = 7
-ROWS_MAX_cols = ROWS - 1
-COL_MAX_cols  = COLUMNS - 1
+ROWS_MAX_INDEX = ROWS - 1
+COL_MAX_INDEX  = COLUMNS - 1
 PLAYER1        = 1
 PLAYER2        = 2
 def create_board():
@@ -72,7 +72,7 @@ def determine_winner(board, player):
 
     # diagonal_count = 0
     # Increment through each row
-    for rows in range(ROWS_MAX_cols, ROWS -3, -1):
+    for rows in range(ROWS_MAX_INDEX ROWS -3, -1):
         # Loop through each cols in the row
         for cols in range(COLUMNS - 3):
             
@@ -81,7 +81,7 @@ def determine_winner(board, player):
             connect3 = [rows - 2, cols + 2]
             connect4 = [rows - 3, cols + 3]
 
-            if connect4[0] > 0 and connect4[1] < COL_MAX_cols:
+            if connect4[0] >= 0 and connect4[1] < COL_MAX_INDEX:
                 if board[connect1[0], connect1[1]] == board[connect2[0], connect2[1]] == board[connect3[0], connect3[1]] == board[connect4[0], connect4[1]] == player:
                     return True
                 else:
@@ -100,7 +100,7 @@ def determine_winner(board, player):
             connect3 = [rows + 2, cols + 2]
             connect4 = [rows + 3, cols + 3]
 
-            if connect4[0] < ROWS_MAX_cols and connect4[1] < COL_MAX_cols:
+            if connect4[0] <= ROWS_MAX_INDEX and connect4[1] <= COL_MAX_INDEX:
                 if board[connect1[0], connect1[1]] == board[connect2[0], connect2[1]] == board[connect3[0], connect3[1]] == board[connect4[0], connect4[1]] == player:
                     return True
                 else:
