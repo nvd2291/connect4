@@ -29,11 +29,11 @@ def determine_winner(board, player):
     for rows in range(0, ROWS):
         #Loop through each index in the row
         for index in range(0, COLUMNS):
-            #If we are at column 5 and there is no piece at
+            #If we are at column 4 and there is no piece at
             #Column 4 winning is not possible for this row
-            if index >= 5 and not horiz_piece_count:
+            if index >= 4 and not horiz_piece_count:
                 break
-            
+
             if int(board[rows][index]) != player:
             # if board[rows][index] != player:
                 #Reset the number of pieces
@@ -70,12 +70,116 @@ def determine_winner(board, player):
 
     #Determine Diagonal Winner L-R UP
 
+    diagonal_count = 0
+    # Increment through each row
+    for rows in range(ROWS_MAX_INDEX, 0, -1):
+        # Loop through each index in the row
+        for index in range(0, COLUMNS):
+            # If the first appearance of the player piece is at 4
+            # A win isn't possible, got to the next row
+            if index >= 4 and diagonal_count < 2:
+                break
+            #else there's a win is possible, set up variables to check
+            # for win condition
+            column_look_head = index
+            row_look_ahead = rows
+
+            for increment in range(0,3):
+                #if the current check look ahead until condition isn't met
+                #Bottom Row is 5 so subtract increment, columns are ascending so add increment
+                if int(board[row_look_ahead - increment][column_look_head - increment]) == player:
+                    diagonal_count += 1
+                else:
+                    diagonal_count = 0
+                    break
+            
+            if diagonal_count == 4:
+                return True
+
+
     #Determine Diagonal Winner L-R Down
+
+    diagonal_count = 0
+    # Decrement through each row
+    for rows in range(0, ROWS):
+        # Loop through each index in the row
+        for index in range(0, COLUMNS):
+            # If the first appearance of the player piece is at 4
+            # A win isn't possible, got to the next row
+            if (index >= 4 and diagonal_count < 2) or (rows >= 3 and index <=2):
+                break
+            #else there's a win is possible, set up variables to check
+            # for win condition
+            column_look_head = index
+            row_look_ahead = rows
+
+            for increment in range(0,3):
+                #if the current check look ahead until condition isn't met
+                #Top Row is 0 so add increment, columns are ascending so add increment
+                if int(board[row_look_ahead + increment][column_look_head + increment]) == player:
+                    diagonal_count += 1
+                else:
+                    diagonal_count = 0
+                    break
+            
+            if diagonal_count == 4:
+                return True
 
     #Determine Diagonal Winner R-L Up
 
+    diagonal_count = 0
+    # Increment through each row
+    for rows in range(0, ROWS):
+        # Loop through each index in the row
+        for index in range(COL_MAX_INDEX, 0, -1):
+            # If the first appearance of the player piece is at 4
+            # A win isn't possible, got to the next row
+            if index <= 2 and diagonal_count < 2:
+                break
+            #else there's a win is possible, set up variables to check
+            # for win condition
+            column_look_head = index
+            row_look_ahead = rows
+
+            for increment in range(0,3):
+                #if the current check look ahead until condition isn't met
+                #Bottom Row is 5 so subtract increment, columns are descending so subtract increment
+                if int(board[row_look_ahead - increment][column_look_head- increment]) == player:
+                    diagonal_count += 1
+                else:
+                    diagonal_count = 0
+                    break
+            
+            if diagonal_count == 4:
+                return True
+
     #Determine Diagonal Winner R-L Down
 
+    diagonal_count = 0
+    # Decrement through each row
+    for rows in range(ROWS_MAX_INDEX, 0, -1):
+        # Loop through each index in the row
+        for index in range(COL_MAX_INDEX, 0, -1):
+            # If the first appearance of the player piece is at 4
+            # A win isn't possible, got to the next row
+            if index <= 2 and diagonal_count < 2:
+                break
+            #else there's a win is possible, set up variables to check
+            # for win condition
+            column_look_head = index
+            row_look_ahead = rows
+
+            for increment in range(0,3):
+                #if the current check look ahead until condition isn't met
+                #Top Row is 0 so add increment, columns are ascending so add increment
+                if int(board[column_look_head - increment][row_look_ahead + increment]) == player:
+                    diagonal_count += 1
+                else:
+                    diagonal_count = 0
+                    break
+            
+            if diagonal_count == 4:
+                return True
 
     return False
 
@@ -94,6 +198,7 @@ game_over = False
 turn = 0
 moves = 0
 max_moves = 42
+
 while not game_over:
 
     if(moves == max_moves):
@@ -110,9 +215,9 @@ while not game_over:
         
         print(board)
 
-        if (determine_winner(board, PLAYER1)):
-            print("Player 1 Wins")
-            gamer_over = True
+    if (determine_winner(board, PLAYER1)):
+        print("Player 1 Wins")
+        gamer_over = True
             
 
     if turn == 1:
@@ -125,9 +230,9 @@ while not game_over:
             
         print(board)
     
-        if (determine_winner(board, PLAYER2)):
-            print("Player 2 Wins")
-            gamer_over = True
+    if (determine_winner(board, PLAYER2)):
+        print("Player 2 Wins")
+        gamer_over = True
 
     moves += 1
     turn = moves % 2
